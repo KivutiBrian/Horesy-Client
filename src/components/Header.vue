@@ -1,7 +1,9 @@
 <template>
     <header class="h-header">
-        <slot name="brand"></slot>
-        <slot name="nav"></slot>
+        <div class="h-container" style="display:flex;justify-content:space-between; align-items:center;">
+            <slot name="brand"></slot>
+            <slot name="nav"></slot>
+        </div>
     </header>
 </template>
 

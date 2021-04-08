@@ -1,14 +1,14 @@
 <template>
   <div id="app">
 
-    <Header class="h-container">
+    <Header >
       <template #brand >
         <h1 class="brand-name">Ho<span class="resy">resy</span></h1>
       </template>
 
       <template #nav>
         <navbar :showBars="showBars">
-          <nav-link @hide-dropdown="hideDropDown" url="/">Homeee</nav-link>
+          <nav-link @hide-dropdown="hideDropDown" url="/">Home</nav-link>
           <nav-link @hide-dropdown="hideDropDown" url="/about">About</nav-link>
           <nav-link @hide-dropdown="hideDropDown" url="/offers">Offers</nav-link>
           <nav-link @hide-dropdown="hideDropDown" url="/contacts">Contacts</nav-link>
@@ -96,6 +96,11 @@ section{
   padding: 5rem 0;
 }
 
+img{
+  width: 100%;
+  height: auto;
+}
+
 // reusable
 .h-container{
   width: 100%;
@@ -114,6 +119,18 @@ section{
   border-radius: 10rem;
 }
 
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 2.5rem;
+}
+
+.grid-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 // reusable end here
 
 .brand-name{
