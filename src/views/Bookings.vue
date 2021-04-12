@@ -11,7 +11,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="bookings"
       :search="search"
     ></v-data-table>
   </v-card>
@@ -36,7 +36,8 @@ export default {
         { text: 'Carbs (g)', value: 'carbs' },
         { text: 'Protein (g)', value: 'protein' },
         { text: 'Iron (%)', value: 'iron' }
-      ]
+      ],
+      bookings: []
     }
   }
 }

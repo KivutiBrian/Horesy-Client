@@ -97,7 +97,7 @@ section{
 }
 
 img{
-  width: 100%;
+  width: 100% !important;
   height: auto;
 }
 
@@ -119,13 +119,13 @@ img{
   border-radius: 10rem;
 }
 
-.grid{
+.h-grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   gap: 2.5rem;
 }
 
-.grid-item{
+.h-grid-item{
   display: flex;
   flex-direction: column;
   align-items: center;

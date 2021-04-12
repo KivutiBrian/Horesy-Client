@@ -65,8 +65,8 @@
           <span class="sub-heading">Beautiful hotels</span>
         </h5>
         <!-- hotel1 -->
-        <div class="grid">
-          <div class="grid-item featured-hotels">
+        <div class="h-grid">
+          <div class="h-grid-item featured-hotels">
             <img src="../assets/voyager.jpg" alt="" class="hotel-image">
             <h5 class="hotel-name">Voyager Beach Resort</h5>
             <span class="hotel-price">From $200/Night</span>
@@ -82,7 +82,7 @@
             </a>
           </div>
           <!-- hotel 2 -->
-          <div class="grid-item featured-hotels">
+          <div class="h-grid-item featured-hotels">
             <img src="../assets/voyager.jpg" alt="" class="hotel-image">
             <h5 class="hotel-name">Sarova White Sands</h5>
             <span class="hotel-price">From $400/Night</span>
@@ -98,7 +98,7 @@
             </a>
           </div>
           <!-- hotel -->
-          <div class="grid-item featured-hotels">
+          <div class="h-grid-item featured-hotels">
             <img src="../assets/voyager.jpg" alt="" class="hotel-image">
             <h5 class="hotel-name">The Reef Hotel</h5>
             <span class="hotel-price">From $100/Night</span>
@@ -157,7 +157,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 .hero{
   width: 100%;
   height: 100vh;

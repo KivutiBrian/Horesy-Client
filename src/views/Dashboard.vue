@@ -5,7 +5,7 @@
             <v-col cols="12" md="4" sm="12" xs="12" class="mt-6">
                 <v-card class="pa-2 mx-auto" style="background-color:#011627"  max-width="250" tile>
                     <v-card-title>
-                        <h3 style="color:#fff;" class="white--text">Hotels</h3>
+                        <h3 class="white--text">Rooms</h3>
                     </v-card-title>
                     <v-row class="ml-2 d-flex justify-space-between">
                         <v-col class="mt-1">

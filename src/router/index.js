@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 import Admin from '../views/Admin'
 import Dashboard from '../views/Dashboard'
 import Bookings from '../views/Bookings'
-import Hotels from '../views/Hotels'
+import Rooms from '../views/Rooms'
 import Users from '../views/Users'
 
 Vue.use(VueRouter)
@@ -24,12 +25,20 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: Admin,
+    meta: {
+      requiresAuth: true
+    },
     children: [
       {
-        path: '',
+        path: 'dashboard',
         name: 'Dashboard',
         component: Dashboard
       },
@@ -39,9 +48,9 @@ const routes = [
         component: Bookings
       },
       {
-        path: 'hotels',
-        name: 'Hotels',
-        component: Hotels
+        path: 'rooms',
+        name: 'Rooms',
+        component: Rooms
       },
       {
         path: 'users',
