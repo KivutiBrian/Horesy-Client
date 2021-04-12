@@ -49,4 +49,17 @@ export default {
   opacity: 0;
 }
 
+@media screen and (min-width: 1000px) {
+  .nav-ul{
+    position: initial;
+    width: initial;
+    height: initial;
+    background-color: transparent;
+    flex-direction: row;
+    justify-content: initial;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 </style>

@@ -153,4 +153,10 @@ img{
   cursor: pointer;
 }
 
+@media screen and (min-width: 1000px) {
+  .fas{
+    display: none;
+  }
+}
+
 </style>

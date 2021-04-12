@@ -35,4 +35,18 @@ export default {
     margin-bottom: 1.6rem;
 }
 
+@media screen and (min-width: 1000px) {
+  .link{
+    font-size: 1.3rem;
+    font-weight: normal;
+    transition: color .5s;
+    margin-right: 3rem;
+    margin-bottom: 0;
+  }
+
+  .link:hover{
+    color: var(--yellow-solid)
+  }
+}
+
 </style>

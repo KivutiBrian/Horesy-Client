@@ -16,11 +16,11 @@
 
     <section class="booking">
       <div class="h-container">
-        <form action="#">
-          <div class="input-group">
+        <form action="#" class="book-form">
+          <!-- <div class="input-group">
             <label for="destination" class="input-label">Destination</label>
             <input type="text" class="input" id="destination">
-          </div>
+          </div> -->
           <div class="input-group">
             <label for="check-in" class="input-label">Check in</label>
             <input type="date" class="input" id="check-in">
@@ -141,6 +141,7 @@
         </div>
       </div>
     </section>
+
   </main>
 </template>
 
@@ -232,7 +233,7 @@ export default {
   padding: 1rem;
   font-weight: bold;
   letter-spacing: 2px;
-  font-family: 'Pacifico', cursive;
+  /* font-family: 'Pacifico', cursive; */
   resize: none;
 }
 
@@ -352,4 +353,23 @@ export default {
   margin-bottom: 2.5rem;
 }
 
+@media screen and (min-width: 1000px) {
+  .book-form{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .book-form .input-group{
+    margin-bottom: 0;
+  }
+
+  .book-form .input-group:first-child{
+    flex: 0 0 20%;
+  }
+
+  .input,
+  .options{
+    min-width: 10rem;
+  }
+}
 </style>
