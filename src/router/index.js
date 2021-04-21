@@ -7,6 +7,7 @@ import Dashboard from '../views/Dashboard'
 import Bookings from '../views/Bookings'
 import Rooms from '../views/Rooms'
 import Users from '../views/Users'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,27 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.adminloggedIn) { // if we are not logged in lets redirect to the login
+      next({
+        name: 'Login'
+      })
+    // eslint-disable-next-line keyword-spacing
+    }else{
+      next()
+    }
+  } else if (to.matched.some(record => record.meta.guest)) {
+    if (store.getters.adminloggedIn) { // if logged in redirect tot the tasks
+      next({ name: 'Dashboard' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

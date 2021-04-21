@@ -44,6 +44,9 @@
 </template>
 
 <script>
+
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Login',
   data () {
@@ -73,8 +76,24 @@ export default {
   computed: {
   },
   methods: {
-    login () {
+
+    // spead the mapaction
+    ...mapActions(['LOGIN']),
+
+    login (e) {
       console.log('Hello')
+      // prevent default
+      e.preventDefault()
+      // call the login action
+      this.LOGIN({
+        email: this.email,
+        password: this.password
+      }).then(data => {
+        console.log('data', data)
+        this.$router.push({ path: '/admin/dashboard' })
+      }).catch(error => {
+        console.log('error2', error)
+      })
     }
   }
 }

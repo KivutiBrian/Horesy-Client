@@ -12,7 +12,7 @@
                         <v-icon color="#fff" class="mt-1" x-large>sms</v-icon>
                         </v-col>
                         <v-col class="ml-15">
-                        <h1 style="color:#fff;" class="white--text">4</h1>
+                        <h1 style="color:#fff;" class="white--text">{{ rooms }}</h1>
                         </v-col>
                     </v-row>
                 </v-card>
@@ -44,7 +44,7 @@
                         <v-icon color="#660708" x-large>sms</v-icon>
                         </v-col>
                         <v-col class="ml-15">
-                        <h1>N/A</h1>
+                        <h1>{{ users }}</h1>
                         </v-col>
                     </v-row>
                 </v-card>
@@ -184,6 +184,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Dashboard',
   components: {},
@@ -201,10 +202,41 @@ export default {
     selectedOpen: false,
     events: []
   }),
+  computed: {
+    ...mapGetters({
+      rooms: 'totalRooms',
+      users: 'totalUsers'
+    })
+  },
   mounted () {
 
   },
+  created () {
+    this.initialize()
+  },
+
   methods: {
+    ...mapActions(['FETCH_ALL_ROOMS']),
+
+    // FETCH ALL ROOMS
+    initialize () {
+      this.FETCH_ALL_ROOMS().then(response => {
+        // format the room data
+        // eslint-disable-next-line camelcase
+        response.data.map(room => {
+          return {
+            id: room.id,
+            room_type: room.room_type.name,
+            description: room.description,
+            price: room.price
+          }
+        })
+      })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
     viewDay ({ date }) {
       this.focus = date
       this.type = 'day'

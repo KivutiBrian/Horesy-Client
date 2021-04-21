@@ -4,7 +4,7 @@
       <div class="h-container">
         <div class="main-heading">
           <h1 class="title">Explore</h1>
-          <h2 class="subtitle">Luxury hotels</h2>
+          <h2 class="subtitle">Luxury rooms</h2>
           <!-- <br><br><br><br><br><br><h1>hell</h1> -->
         </div>
         <router-link class="h-btn h-btn-gradient" to="#">
@@ -62,7 +62,7 @@
       <div class="h-container">
         <h5 class="section-head">
           <span class="heading">Discover</span>
-          <span class="sub-heading">Beautiful hotels</span>
+          <span class="sub-heading">Beautiful rooms</span>
         </h5>
         <!-- hotel1 -->
         <div class="h-grid">

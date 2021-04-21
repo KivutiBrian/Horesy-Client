@@ -10,16 +10,21 @@
                             <v-list>
                                 <v-list-item>
                                 <v-list-item-avatar>
-                                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                                    <v-avatar
+                                    color="orange"
+                                    size="56"
+                                    >
+                                    <span class="white--text headline">{{ user.full_name[0] }}</span>
+                                    </v-avatar>
                                 </v-list-item-avatar>
                                 </v-list-item>
 
                                 <v-list-item link>
                                 <v-list-item-content>
                                     <v-list-item-title class="title">
-                                    John Leider
+                                    {{ user.full_name }}
                                     </v-list-item-title>
-                                    <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+                                    <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
                                 </v-list-item-content>
 
                                 <v-list-item-action>
@@ -33,7 +38,6 @@
                                 dense
                             >
                                 <v-list-item-group
-                                v-model="selectedItem"
                                 color="primary"
                                 >
                                 <v-list-item
@@ -65,11 +69,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Admin',
   components: {},
   data: () => ({
-    selectedItem: 0,
+    // selectedItem: 0,
     items: [
       { text: 'Dashboard', icon: 'mdi-folder', link: { name: 'Dashboard' } },
       { text: 'Bookings', icon: 'mdi-account-multiple', link: { name: 'Bookings' } },
@@ -78,9 +83,15 @@ export default {
       { text: 'SignOut', icon: 'mdi-history' }
     ]
   }),
+  computed: {
+    ...mapState({
+      user: state => state.user
+    })
+  },
   methods: {
     change_route (object) {
-      this.$router.push(object)
+      // eslint-disable-next-line handle-callback-err
+      this.$router.push(object).catch(err => {})
     }
   }
 }
