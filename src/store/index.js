@@ -31,6 +31,9 @@ export default new Vuex.Store({
     SET_USER (state, user) {
       state.user = user
     },
+    SET_USERS (state, users) {
+      state.users = users
+    },
     SET_ROOM_TYPES (state, payload) {
       state.room_types = payload
     },
@@ -39,6 +42,9 @@ export default new Vuex.Store({
     },
     ADD_NEW_ROOM (state, payload) {
       state.rooms.push(payload)
+    },
+    PUSH_NEW_USER (state, user) {
+      state.users.push(user)
     }
 
   },
@@ -135,13 +141,24 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         HTTP.post(`auth/register?role=${payload.role}`, formattedPaylod)
           .then(response => {
-            console.log("add_user_response", response.data)
+            // console.log("add_user_response", response.data)
+            context.commit('PUSH_NEW_USER', response.data)
             resolve(response.data)
           })
           .then(error => {
             // console.log('error_add_user', error)
             reject(error)
           })
+      })
+    },
+
+    GET_ALL_USERS (context, payload) {
+      return new Promise((resolve, reject) => {
+        HTTP.get(`usr`)
+          .then(response => {
+            context.commit('SET_USERS', response.data)
+          })
+          .catch(error => reject(error))
       })
     }
 

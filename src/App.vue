@@ -7,7 +7,7 @@
       </template>
 
       <template #nav>
-        <navbar :showBars="showBars">
+        <navbar :showBars="showBars" >
           <nav-link @hide-dropdown="hideDropDown" url="/">Home</nav-link>
           <nav-link @hide-dropdown="hideDropDown" url="/about">About</nav-link>
           <nav-link @hide-dropdown="hideDropDown" url="/offers">Offers</nav-link>
@@ -31,6 +31,7 @@ import Header from './components/Header'
 import Navbar from './components/Nav'
 import NavLink from './components/Navlink'
 
+import { mapGetters } from 'vuex'
 export default {
   name: 'App',
   components: {
@@ -42,6 +43,11 @@ export default {
     return {
       showBars: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'adminloggedIn'
+    })
   },
   methods: {
     toggleBars () {

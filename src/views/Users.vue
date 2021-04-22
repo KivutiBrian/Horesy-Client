@@ -171,6 +171,24 @@ export default {
         align: 'start',
         sortable: false,
         value: 'phone_number'
+      },
+      {
+        text: 'Member Since',
+        align: 'start',
+        sortable: false,
+        value: 'member_since'
+      },
+      {
+        text: 'Role',
+        align: 'start',
+        sortable: false,
+        value: 'role'
+      },
+      {
+        text: 'Total Bookings',
+        align: 'start',
+        sortable: false,
+        value: 'total_bookings'
       }
       // { text: 'Calories', value: 'calories' }
     ],
@@ -196,7 +214,19 @@ export default {
 
   computed: {
     ...mapState({
-      all_users: []
+      all_users: state => {
+        return state.users.map(user => {
+          return {
+            id: user.id,
+            full_name: user.full_name,
+            email: user.email,
+            phone_number: user.phone,
+            member_since: new Date(user.created_at).toISOString().substr(0, 10),
+            role: user.user_roles[0].role.role,
+            total_bookings: user.bookings.length
+          }
+        })
+      }
     }),
     formTitle () {
       return this.editedIndex === -1 ? 'Add New User' : 'Edit User Details'
@@ -214,12 +244,20 @@ export default {
 
   created () {
     this.initialize()
+    this.initialize_users()
   },
 
   methods: {
-    ...mapActions(['ADD_NEW_USER']),
+    ...mapActions(['ADD_NEW_USER', 'GET_ALL_USERS']),
 
     initialize () {},
+
+    initialize_users () {
+      this.GET_ALL_USERS().then(() => {
+        console.log('all_users')
+      })
+        .catch(error => console.log('error', error))
+    },
 
     editItem (item) {
       this.editedIndex = this.rooms.indexOf(item)
@@ -258,7 +296,6 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.rooms[this.editedIndex], this.editedItem)
       } else {
-        console.log('edited_item', this.editedItem)
         // call add new user action
         this.ADD_NEW_USER({
           full_name: this.editedItem.full_name,

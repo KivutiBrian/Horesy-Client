@@ -213,10 +213,11 @@ export default {
   },
   created () {
     this.initialize()
+    this.initialize_users()
   },
 
   methods: {
-    ...mapActions(['FETCH_ALL_ROOMS']),
+    ...mapActions(['FETCH_ALL_ROOMS', 'GET_ALL_USERS']),
 
     // FETCH ALL ROOMS
     initialize () {
@@ -235,6 +236,13 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+
+    initialize_users () {
+      this.GET_ALL_USERS().then(() => {
+        console.log('all_users')
+      })
+        .catch(error => console.log('error', error))
     },
 
     viewDay ({ date }) {
