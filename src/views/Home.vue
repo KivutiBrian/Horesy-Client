@@ -1,4 +1,5 @@
 <template>
+<v-app>
   <main>
     <div class="hero">
       <div class="h-container">
@@ -14,13 +15,13 @@
       </div>
     </div>
 
-    <section class="booking">
+    <!-- <section class="booking">
       <div class="h-container">
         <form action="#" class="book-form">
-          <!-- <div class="input-group">
+          <div class="input-group">
             <label for="destination" class="input-label">Destination</label>
             <input type="text" class="input" id="destination">
-          </div> -->
+          </div>
           <div class="input-group">
             <label for="check-in" class="input-label">Check in</label>
             <input type="date" class="input" id="check-in">
@@ -56,7 +57,7 @@
           </button>
         </form>
       </div>
-    </section>
+    </section> -->
 
     <section class="hotels">
       <div class="h-container">
@@ -66,10 +67,10 @@
         </h5>
         <!-- hotel1 -->
         <div class="h-grid">
-          <div class="h-grid-item featured-hotels">
+          <div class="h-grid-item featured-hotels" v-for="room in rooms" :key="room.id">
             <img src="../assets/voyager.jpg" alt="" class="hotel-image">
-            <h5 class="hotel-name">Voyager Beach Resort</h5>
-            <span class="hotel-price">From $200/Night</span>
+            <h5 class="hotel-name">{{room.room_type}}</h5>
+            <span class="hotel-price">From ${{room.price}}/Night</span>
             <div class="hotel-rating">
               <i class="fas fa-star rating"></i>
               <i class="fas fa-star rating"></i>
@@ -77,45 +78,160 @@
               <i class="fas fa-star rating"></i>
               <i class="fas fa-star rating"></i>
             </div>
-            <a href="#" class="h-btn h-btn-book">
+            <div @click="selectedItem(room.id)" class="h-btn h-btn-book">
               Book now
-            </a>
-          </div>
-          <!-- hotel 2 -->
-          <div class="h-grid-item featured-hotels">
-            <img src="../assets/voyager.jpg" alt="" class="hotel-image">
-            <h5 class="hotel-name">Sarova White Sands</h5>
-            <span class="hotel-price">From $400/Night</span>
-            <div class="hotel-rating">
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
             </div>
-            <a href="#" class="h-btn h-btn-book">
-              Book now
-            </a>
-          </div>
-          <!-- hotel -->
-          <div class="h-grid-item featured-hotels">
-            <img src="../assets/voyager.jpg" alt="" class="hotel-image">
-            <h5 class="hotel-name">The Reef Hotel</h5>
-            <span class="hotel-price">From $100/Night</span>
-            <div class="hotel-rating">
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-              <i class="fas fa-star rating"></i>
-            </div>
-            <a href="#" class="h-btn h-btn-book">
-              Book now
-            </a>
+
+                <v-dialog
+                  v-model="dialog"
+                  max-width="400"
+                >
+                  <v-card>
+                    <v-card-title class="headline">
+                      Enter your details
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                      >
+                        <v-text-field
+                          v-model="name"
+                          :counter="30"
+                          :rules="nameRules"
+                          label="Name"
+                          required
+                        ></v-text-field>
+
+                        <v-text-field
+                          v-model="email"
+                          :rules="emailRules"
+                          label="E-mail"
+                          required
+                        ></v-text-field>
+
+                         <v-text-field
+                          v-model="phone"
+                          :rules="phoneRules"
+                          label="Phone"
+                          required
+                        ></v-text-field>
+
+                        <v-menu
+                          ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          :return-value.sync="date_from"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="date_from"
+                              label="Date From"
+                              prepend-icon="mdi-calendar"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="date_from"
+                            no-title
+                            scrollable
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="menu = false"
+                            >
+                              Cancel
+                            </v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.menu.save(date_from)"
+                            >
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-menu>
+
+                        <v-menu
+                          ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          :return-value.sync="date_to"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="date_to"
+                              label="Date To"
+                              prepend-icon="mdi-calendar"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="date_to"
+                            no-title
+                            scrollable
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="menu = false"
+                            >
+                              Cancel
+                            </v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.menu.save(date_to)"
+                            >
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-menu>
+                      </v-form>
+
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialog = false"
+                      >
+                        Disagree
+                      </v-btn>
+
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="submit_booking"
+                      >
+                        Submit Booking
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
           </div>
         </div>
       </div>
-    </section>
+    </section>s
 
     <section class="offer">
       <div class="h-container">
@@ -143,16 +259,94 @@
     </section>
 
   </main>
+  </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Home',
   components: {
 
+  },
+  data: () => ({
+    room_id: null,
+    date_from: new Date().toISOString(),
+    date_to: new Date().toISOString(),
+    menu: false,
+    rooms: [],
+    dialog: false,
+    valid: true,
+    name: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length <= 30) || 'Name must be less than 10 characters'
+    ],
+    email: '',
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+    ],
+    phone: '',
+    phoneRules: [
+      v => !!v || 'Phone number is required',
+      v => (v && v.length > 14) || 'Phone number must be 12 or 10 characters'
+    ]
+  }),
+
+  created () {
+    this.initialize()
+  },
+
+  methods: {
+    ...mapActions(['FETCH_ALL_ROOMS', 'POST_BOOKING']),
+
+    initialize () {
+      this.FETCH_ALL_ROOMS().then(response => {
+        // format the room data
+        // eslint-disable-next-line camelcase
+        const formatted_rooms_data = response.data.map(room => {
+          return {
+            id: room.id,
+            room_type: room.room_type.name,
+            description: room.description,
+            price: room.price
+          }
+        })
+        // eslint-disable-next-line camelcase
+        this.rooms = formatted_rooms_data
+      })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    selectedItem (item) {
+      console.log(item)
+      this.dialog = true
+      this.room_id = item
+    },
+
+    submit_booking (e) {
+      e.preventDefault()
+      this.dialog = false
+
+      this.POST_BOOKING({
+        room_id: this.room_id,
+        full_name: this.name,
+        email: this.email,
+        phone: this.phone,
+        date_from: this.date_from,
+        date_to: this.date_to
+      }).then(res => {
+        console.log(res)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>

@@ -52,6 +52,15 @@
                                         <v-list-item-title v-text="item.text"></v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
+                                 <v-list-item link>
+                                    <v-list-item-icon>
+                                        <v-icon >mdi-history</v-icon>
+                                    </v-list-item-icon>
+
+                                    <v-list-item-content @click="handleSignOut">
+                                        <v-list-item-title> Sign Out </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
                                 </v-list-item-group>
                             </v-list>
                         </v-navigation-drawer>
@@ -69,7 +78,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: 'Admin',
   components: {},
@@ -79,8 +88,8 @@ export default {
       { text: 'Dashboard', icon: 'mdi-folder', link: { name: 'Dashboard' } },
       { text: 'Bookings', icon: 'mdi-account-multiple', link: { name: 'Bookings' } },
       { text: 'Rooms', icon: 'mdi-star', link: { name: 'Rooms' } },
-      { text: 'Users', icon: 'mdi-account-multiple', link: { name: 'Users' } },
-      { text: 'SignOut', icon: 'mdi-history' }
+      { text: 'Users', icon: 'mdi-account-multiple', link: { name: 'Users' } }
+      // { text: 'SignOut', icon: 'mdi-history' }
     ]
   }),
   computed: {
@@ -88,10 +97,36 @@ export default {
       user: state => state.user
     })
   },
+  created () {
+    this.initialize_user()
+  },
   methods: {
+    ...mapActions(['RETRIEVE_USER', 'DESTROY_ADMIN_TOKEN']),
+
+    initialize_user () {
+      this.RETRIEVE_USER().then(res => {
+        console.log(res)
+      })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
     change_route (object) {
       // eslint-disable-next-line handle-callback-err
       this.$router.push(object).catch(err => {})
+    },
+
+    handleSignOut (e) {
+      e.preventDefault()
+      this.DESTROY_ADMIN_TOKEN()
+        .then(() => {
+          this.$router.push({ path: '/login' })
+          console.log('Admin Logged out')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

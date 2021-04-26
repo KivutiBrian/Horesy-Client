@@ -178,12 +178,12 @@ export default {
         sortable: false,
         value: 'member_since'
       },
-      {
-        text: 'Role',
-        align: 'start',
-        sortable: false,
-        value: 'role'
-      },
+      // {
+      //   text: 'Role',
+      //   align: 'start',
+      //   sortable: false,
+      //   value: 'role'
+      // },
       {
         text: 'Total Bookings',
         align: 'start',
@@ -222,7 +222,7 @@ export default {
             email: user.email,
             phone_number: user.phone,
             member_since: new Date(user.created_at).toISOString().substr(0, 10),
-            role: user.user_roles[0].role.role,
+            // role: user.user_roles[0].role.role,
             total_bookings: user.bookings.length
           }
         })

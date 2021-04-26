@@ -28,7 +28,7 @@
                         <v-icon color="#fff" x-large>sms</v-icon>
                         </v-col>
                         <v-col class="ml-15">
-                        <h1 class="white--text">N/A</h1>
+                        <h1 class="white--text">{{ bookings }}</h1>
                         </v-col>
                     </v-row>
                 </v-card>
@@ -199,13 +199,14 @@ export default {
     },
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false,
-    events: []
+    selectedOpen: false
   }),
   computed: {
     ...mapGetters({
       rooms: 'totalRooms',
-      users: 'totalUsers'
+      users: 'totalUsers',
+      bookings: 'totalBookings',
+      events: 'calender_events'
     })
   },
   mounted () {
@@ -214,10 +215,12 @@ export default {
   created () {
     this.initialize()
     this.initialize_users()
+    this.initialize_bookings()
+    this.initialize_calender_bookings()
   },
 
   methods: {
-    ...mapActions(['FETCH_ALL_ROOMS', 'GET_ALL_USERS']),
+    ...mapActions(['FETCH_ALL_ROOMS', 'GET_ALL_USERS', 'GET_BOOKINGS', 'CALENDER_BOOKINGS']),
 
     // FETCH ALL ROOMS
     initialize () {
@@ -238,11 +241,35 @@ export default {
         })
     },
 
+    initialize_bookings () {
+      this.GET_BOOKINGS().then(response => {
+        // eslint-disable-next-line camelcase
+        const formatted_bookings = response.map(booking => {
+          return {
+            id: `BID${booking.id}`,
+            room_type: booking.room.room_type.name,
+            full_name: booking.user.full_name,
+            phone_number: booking.user.phone,
+            email: booking.user.email,
+            from: booking.date_from.split('T')[0],
+            to: booking.date_to.split('T')[0]
+          }
+        })
+
+        // eslint-disable-next-line camelcase
+        this.bookings = formatted_bookings
+      })
+    },
+
     initialize_users () {
       this.GET_ALL_USERS().then(() => {
         console.log('all_users')
       })
         .catch(error => console.log('error', error))
+    },
+
+    initialize_calender_bookings () {
+      this.CALENDER_BOOKINGS().then(res => console.log(res)).catch(error => console.log(error))
     },
 
     viewDay ({ date }) {

@@ -17,7 +17,9 @@ export default new Vuex.Store({
     user: null,
     users: [],
     room_types: [],
-    rooms: []
+    rooms: [],
+    booking: [],
+    events: []
 
   },
   mutations: {
@@ -45,6 +47,17 @@ export default new Vuex.Store({
     },
     PUSH_NEW_USER (state, user) {
       state.users.push(user)
+    },
+    SET_BOOKINGS (state, bookings) {
+      state.booking = bookings
+    },
+    // destroy token
+    CLEAR_ADMIN_TOKEN (state) {
+      state.admin_token = null;
+      axios.defaults.headers.common.Authorization = null;
+    },
+    SET_CALENDER_EVENTS (state, payload) {
+      state.events = payload
     }
 
   },
@@ -160,6 +173,82 @@ export default new Vuex.Store({
           })
           .catch(error => reject(error))
       })
+    },
+
+    POST_BOOKING (ocntext, payload) {
+      console.log(payload)
+      return new Promise((resolve, reject) => {
+        HTTP.post(`bookings`, payload)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+
+    GET_BOOKINGS (context) {
+      const adminToken = localStorage.getItem('token')
+      // eslint-disable-next-line dot-notation
+      HTTP.defaults.headers.common['Authorization'] = `Bearer ${adminToken}`
+      return new Promise((resolve, reject) => {
+        HTTP.get(`bookings`)
+          .then(response => {
+            context.commit('SET_BOOKINGS', response.data)
+            // console.log(response.data)
+            resolve(response.data)
+          })
+          .catch(error => reject(error))
+      })
+    },
+
+    CALENDER_BOOKINGS (context) {
+      const adminToken = localStorage.getItem('token')
+      // eslint-disable-next-line dot-notation
+      HTTP.defaults.headers.common['Authorization'] = `Bearer ${adminToken}`
+      return new Promise((resolve, reject) => {
+        HTTP.get('bookings/calender')
+          .then(response => {
+            context.commit('SET_CALENDER_EVENTS', response.data)
+            console.log(response.data)
+            resolve(response.data)
+          })
+          .catch(error => reject(error))
+      })
+    },
+
+    // logged in user
+    RETRIEVE_USER (context) {
+      context.commit("SET_LOADING_STATUS", true);
+      const adminToken = localStorage.getItem('token')
+      HTTP.defaults.headers.common.Authorization = `Bearer ${adminToken}`;
+      return new Promise((resolve, reject) => {
+        HTTP.get(`usr/users/me`)
+          .then(res => {
+            context.commit("SET_USER", res.data)
+            // console.log(res.data)
+            resolve(res)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+
+    // log out user
+    DESTROY_ADMIN_TOKEN (context) {
+      return new Promise((resolve, reject) => {
+        if (context.getters.adminloggedIn) {
+          localStorage.removeItem('admin_token')
+          context.commit("CLEAR_ADMIN_TOKEN")
+          resolve()
+        } else {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject()
+        }
+      })
     }
 
   },
@@ -174,6 +263,14 @@ export default new Vuex.Store({
 
     totalUsers (state) {
       return state.users.length
+    },
+
+    totalBookings (state) {
+      return state.booking.length
+    },
+
+    calender_events (state) {
+      return state.events
     }
 
   },
